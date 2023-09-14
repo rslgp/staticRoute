@@ -199,16 +199,50 @@
     }
 ];
 
+var naoAtendidos = [{"lat":-7.0786265,"lon":-34.840958},
+{"lat":-7.155147,"lon":-34.8316159},
+{"lat":-7.13779,"lon":-34.8825825},
+{"lat":-7.1687285,"lon":-34.827241},
+{"lat":-7.1723221,"lon":-34.8579119},
+{"lat":40.070028,"lon":29.538962},
+{"lat":-7.146834,"lon":-34.835393},
+{"lat":40.792357,"lon":-7.321069},
+{"lat":-7.110485,"lon":-34.871981},
+{"lat":-7.1366515,"lon":-34.8334375},
+{"lat":-7.1576894,"lon":-34.8730133},
+{"lat":-7.129824,"lon":-34.916505},
+{"lat":-20.3294551,"lon":-40.3882302},
+{"lat":-7.151357,"lon":-34.831431},
+{"lat":-7.738028,"lon":-72.650938},
+{"lat":-7.184966,"lon":-34.866148},
+{"lat":-7.208672,"lon":-34.842238},
+{"lat":-7.1403515,"lon":-34.8169961}]
+
+function checkNaoAtendido(coord){
+	for(var i of naoAtendidos){
+		console.log(coord.lat,i.lat,coord.lng,i.lon);
+		if(coord.lat==i.lat && coord.lng==i.lon) return true;
+	}
+	return false;
+}
         // Create a custom icon for markers
         var customIcon = L.icon({
             iconUrl: 'marker.png', // Replace with your custom marker image URL
             iconSize: [32, 32], // Adjust the size of the marker
             iconAnchor: [16, 28], // Adjust the anchor point
         });
+		
+        var customIconRed = L.icon({
+            iconUrl: 'red.png', // Replace with your custom marker image URL
+            iconSize: [32, 32], // Adjust the size of the marker
+            iconAnchor: [16, 28], // Adjust the anchor point
+        });
 
         // Add markers with custom icons for each coordinate
         coordinates.forEach(function(coord) {
-            var marker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(map);
+			var marker;
+			if(checkNaoAtendido(coord)) marker = L.marker([coord.lat, coord.lng], { icon: customIconRed }).addTo(map);
+            else marker = L.marker([coord.lat, coord.lng], { icon: customIcon }).addTo(map);
             marker.bindPopup(coord.label); // Add a popup with a label
         });
 
